@@ -1,0 +1,19 @@
+.main {
+	display: grid;
+	grid-template-columns: 125px 75px repeat(3, 1fr) 1em;
+	grid-template-rows: 80px 100px 20% 1fr 2fr 1em
+}
+
+@media only screen and (min-width: 600px) {
+	.main {
+		grid-template-columns: 200px 3fr 200px 3fr; 
+	}
+}
+
+@media only screen and (min-width: 800px) {
+	.main {
+		grid-template-rows: auto 100px repeat(2, 200px) 30px;
+		grid-template-columns: 255px repeat(6, 13%);
+	}
+}
+

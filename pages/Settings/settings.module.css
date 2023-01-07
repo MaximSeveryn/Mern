@@ -1,0 +1,15 @@
+.main {
+    
+}
+
+.mainSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.exportData {
+    font-size: 2em;
+    width: 30%;
+    height: 100px;
+}
