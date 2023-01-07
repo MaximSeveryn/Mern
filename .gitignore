@@ -1,5 +1,3 @@
 node_modules/
-config/
 playground/
-keys.txt
-runMongo.sh
+.env
