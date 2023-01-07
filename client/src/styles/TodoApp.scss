@@ -1,0 +1,44 @@
+#TodoApp{
+    height: 100vh;
+    //100vh means that the initial body height will take 100% of the viewport height, 
+    //whereas the use of min-height instead of height will let 
+    //the body element grow even more if necessary
+    place-items: center;
+    .TodoApp-content{
+        padding: 30px;
+
+        .inputSection{
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .inputField {
+                width: 100%;
+                background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+
+                // shadow
+                --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+                --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+
+                border-radius: 0.25 rem;
+                padding: 2rem 2rem 2rem 2rem;
+            }
+
+            .addTaskBtn {
+                background-color: #2C3333;
+                color: #E7F6F2;
+                padding: 50px 30px;
+                border-radius: 0.25rem;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+            }
+            .addTaskBtn:hover {
+                opacity: 0.9;
+            }
+        }
+    }
+}
