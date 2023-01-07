@@ -1,3 +1,0 @@
-PORT = 3001
-MODE = development
-MONGO_URI = mongodb+srv://Shodydosh:lkjasdkks@merncluster.wfr3hie.mongodb.net/MERN-TodoApp/Tasks?retryWrites=true&w=majority
