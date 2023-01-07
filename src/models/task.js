@@ -1,60 +1,24 @@
-// TODO : Task-Model
-/**
- * @Schema Properties:
- * description
- * completed
- *
- * ! Mongoose VIRTUAL ->
- *  a virtual is a property that is not stored in MongoDB.
- *  Virtuals are typically used for computed properties on documents.
- *
- * Author: punitkumaryh
- */
-const mongoose = require("mongoose");
-const validator = require("validator");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-//// Creating instance Schema
-//#region task-Schema
-const taskSchema = new Schema(
-  {
+const taskSchema = new mongoose.Schema({
     description: {
-      type: String,
-      required: true,
-      trim: true,
+    type: String,
+    required: true,
+    trim: true
     },
     completed: {
-      type: Boolean,
-      default: false,
+    type: Boolean,
+    default: false
     },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      require: true,
-      // $$ "ref" reference the User model to access User details in task model
-      ref: "User",
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+    }
+}, {
+    timestamps: true
+})
 
-const task = mongoose.model("Task", taskSchema);
-//#endregion
+const Task = mongoose.model('Task', taskSchema)
 
-//// Creating instance without schema
-//#region task schema-less
-// const task = mongoose.model("Task", {
-//   description: {
-//     type: String,
-//     required: true,
-//     trim: true,
-//   },
-//   completed: {
-//     type: Boolean,
-//     default: false,
-//   },
-// });
-//#endregion
-
-module.exports = task;
+module.exports = Task

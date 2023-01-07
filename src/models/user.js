@@ -1,254 +1,121 @@
-// TODO : User-Model
-/**
- * @Schema Properties:
- * name
- * email
- * password
- * age
- * phone
- *
- * * For below methods never use Arrow => function
- * ^ userSchema.statics -> methods are accessible on "User" Models called as *MODEL_METHODS*
- * ^ userSchema.methods -> methods are accessible on individual user &/ instance of models called *INSTANCE_METHODS*
- *
- * # Tracking by storing generated Token -> Helps in logging out
- *  as sever sends generated token to client needs to store in DB.
- *
- * Author: punitkumaryh
- */
+const mongoose = require('mongoose')
+const validator = require('validator')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const Task = require('./task')
 
-const mongoose = require("mongoose");
-const validator = require("validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const Schema = mongoose.Schema;
-const Task = require("./task");
-
-// TODO: Creating user model with schema
-//#region User-Schema
-const userSchema = new Schema(
-  {
+const userSchema = new mongoose.Schema({
     name: {
-      type: String,
-      required: true,
-      trim: true,
+        type: String,
+        required: true,
+        trim: true
     },
     email: {
-      type: String,
-      unique: true,
-      required: true,
-      trim: true,
-      lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error("Email is invalid");
+        type: String,
+        unique: true,
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error('Email is invalid')
+            }
         }
-      },
     },
     password: {
-      type: String,
-      required: true,
-      minlength: 7,
-      trim: true,
-      validate(value) {
-        if (value.toLowerCase().includes("password")) {
-          throw new Error("Cannot have as password as 'password'");
+        type: String,
+        required: true,
+        minlength: 7,
+        trim: true,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"')
+            }
         }
-      },
     },
     age: {
-      type: Number,
-      default: 0,
-      // custom validator
-      validate(value) {
-        if (value < 0) {
-          throw new Error("Age must be positive Number");
+        type: Number,
+        default: 0,
+        validate(value) {
+            if (value < 0) {
+                throw new Error('Age must be a postive number')
+            }
         }
-      },
-    }, // shorthand for 'age:{type:Number}'
-    phone: {
-      type: String,
-      trim: true,
-      //  Validator Library
-      validate(value) {
-        if (!validator.isMobilePhone(value)) {
-          throw new Error("Invalid phone number");
-        }
-      },
     },
-    tokenSet: [
-      {
+    tokens: [{
         token: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+            type: String,
+            required: true
+        }
+    }],
     avatar: {
-      type: Buffer,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+        type: Buffer
+    }
+}, {
+    timestamps: true
+})
 
-// Implementing Mongoose Virtuals
-//#region FIXME: Storing tasks virtually in User model
-userSchema.virtual("ownerTasks", {
-  ref: "Task", //"Task" model
-  // Its relationship between "Task" and "owner"
-  localField: "_id", // Its relationship between "Task" and "owner"
-  foreignField: "owner",
-});
-//#endregion
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+})
 
-// TODO: Fetching Public Profile (By Hiding Private data)
-//#region
-//#region FIXME: Logic -1
-// userSchema.methods.getPublicProfile = function () {
-//   const currentUser = this;
-//   // Making copy of currentUser and deleting private data fields
-//   const refObject = currentUser.toObject();
-
-//   delete refObject.password;
-//   delete refObject.tokenSet;
-//   return refObject;
-// };
-//#endregion
-
-//#region TODO: Logic -2
 userSchema.methods.toJSON = function () {
-  const currentUser = this;
-  const userCopy = currentUser.toObject();
+    const user = this
+    const userObject = user.toObject()
 
-  delete userCopy.password;
-  delete userCopy.tokenSet;
-  delete userCopy.avatar;
-  ``;
-  return userCopy;
-};
-//#endregion
-//#endregion
+    delete userObject.password
+    delete userObject.tokens
+    delete userObject.avatar
 
-// TODO: Generating Authentication Token
-//#region Token generation function
-userSchema.methods.generateAutToken = async function () {
-  const currentUser = this;
+    return userObject
+}
 
-  const token = jwt.sign(
-    {
-      _id: currentUser._id.toString(),
-    },
-    process.env.JWT_SECRET
-  );
+userSchema.methods.generateAuthToken = async function () {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
 
-  // # Tracking the generated Token by TODO:Storing Tokens into DB as part of document
-  currentUser.tokenSet = currentUser.tokenSet.concat({ token }); //{ token } == { token:xxxx.xxxx.xxx }
-  await currentUser.save();
+    user.tokens = user.tokens.concat({ token })
+    await user.save()
 
-  return token; //returns token of currentUser
-};
-//#endregion
+    return token
+}
 
-// TODO: Finding user by their credentials (email and password)
-//#region User Credential function
-userSchema.statics.findByCredentials = async function (email, password) {
-  // TODO 1. Finding User by Email
-  const userDetails = await User.findOne({ email });
-  if (!userDetails) {
-    throw new Error("Unable to login!");
-  }
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
 
-  // TODO 2. Finding User by password -> only after Email match
-  const isMatch = await bcrypt.compare(password, userDetails.password);
-  if (!isMatch) {
-    throw new Error("Unable to login!");
-  }
-  // console.log("user:->", userDetails);
-  // console.log("Match?", isMatch);
-  return userDetails;
-};
-//#endregion
+    if (!user) {
+        throw new Error('Unable to login')
+    }
 
-//TODO: MIDDLEWARE -> Hashing New Created password and modified password
-//#region Pre Password save Mongoose middleware
-userSchema.pre("save", async function (next) {
-  const currentUser = this;
-  // "this" -> is current each input currentUser about to save
+    const isMatch = await bcrypt.compare(password, user.password)
 
-  // ? Checking password is already hashed + Hashing Newly created + modified passwords
-  if (currentUser.isModified("password")) {
-    currentUser.password = await bcrypt.hash(currentUser.password, 8);
-  }
+    if (!isMatch) {
+        throw new Error('Unable to login')
+    }
 
-  next();
-});
-//#endregion
+    return user
+}
 
-//// TODO: MIDDLEWARE -> Deleting User's tasks when user is removed
-//#region deleting user's tasks
-userSchema.pre("remove", async function (next) {
-  const user = this;
-  await Task.deleteMany({ owner: user._id });
-  next();
-});
-//#endregion
+// Hash the plain text password before saving
+userSchema.pre('save', async function (next) {
+    const user = this
 
-const User = mongoose.model("User", userSchema);
-//#endregion
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
+    }
 
-//// Creating User model without schema
-//#region Schema-less
-// const User = mongoose.model("User", {
-//   name: {
-//     type: String,
-//     required: true,
-//     trim: true,
-//   },
-//   email: {
-//     type: String,
-//     required: true,
-//     trim: true,
-//     lowercase: true,
-//     validate(value) {
-//       if (!validator.isEmail(value)) {
-//         throw new Error("Email is invalid");
-//       }
-//     },
-//   },
-//   password: {
-//     type: String,
-//     required: true,
-//     minlength: 7,
-//     trim: true,
-//     validate(value) {
-//       if (value.toLowerCase().includes("password")) {
-//         throw new Error("Cannot have as password as 'password'");
-//       }
-//     },
-//   },
-//   age: {
-//     type: Number,
-//     default: 0,
-//     // custom validator
-//     validate(value) {
-//       if (value < 0) {
-//         throw new Error("Age must be positive Number");
-//       }
-//     },
-//   }, // shorthand for 'age:{type:Number}'
-//   phone: {
-//     type: String,
-//     trim: true,
-//     //  Validator Library
-//     validate(value) {
-//       if (!validator.isMobilePhone(value)) {
-//         throw new Error("Invalid phone number");
-//       }
-//     },
-//   },
-// });
-//#endregion
+    next()
+})
 
-module.exports = User;
+// Delete user tasks when user is removed
+userSchema.pre('remove', async function (next) {
+    const user = this
+    await Task.deleteMany({ owner: user._id })
+    next()
+})
+
+const User = mongoose.model('User', userSchema)
+
+module.exports = User
