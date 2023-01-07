@@ -1,51 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article:
-http://ogp.me/ns/article#">
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Kooper - Open Source projects visualizer</title>
-
-<!-- StyleSheets & DNS Prefetch -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
-  <link rel="dns-prefetch" href="//www.google-analytics.com">
-  <link rel="dns-prefetch" href="https://twitter.com/os_weekends">
-  <link rel="dns-prefetch" href="//platform.twitter.com">
-  <link href='https://fonts.googleapis.com/css?family=Roboto:700,400|Source+Code+Pro' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="assets/css/main.css">
-
-<!-- Robots & indexing -->
-
-<!-- Open Graph data -->
-  <meta property="og:title" content="Kooper - Open Source projects visualizer" />
-  <meta property="og:type" content="article" />
-  <!-- <meta property="og:url" content=" " /> -->
-  <!-- <meta property="og:image" content=" " /> -->
-  <meta property="og:description" content="Kooper - Open Source projects visualizer" />
-  <meta property="og:site_name" content="Kooper" />
-
-<!-- Twitter cards -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@os_weekends">
-  <!-- <meta name="twitter:domain" content=" "> -->
-  <meta name="twitter:creator" content="@os_weekends">
-  <meta name="twitter:title" content="Kooper - Open Source projects visualizer">
-  <!-- <meta name="twitter:image" content=" "> -->
-  <meta name="twitter:description" content="Kooper - Open Source projects visualizer">
-  
-<!-- Favicon -->
-  
-<!-- Chrome for Android Toolbar Color-->
-
-<!-- Other -->
-  <meta name="description" content="Kooper - Open Source projects visualizer">
-
-</head>
-</head>
-<body>
-	<div id="app">My freaking test</div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <!-- normalize css -->
+    <link rel="stylesheet" href="./normalize.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="./main.css" />
+    <title>Task Manager</title>
+  </head>
+  <body>
+    <form class="task-form">
+      <h4>task manager</h4>
+      <div class="form-control">
+        <input
+          type="text"
+          name="name"
+          class="task-input"
+          placeholder="e.g. wash dishes"
+        />
+        <button type="submit" class="btn submit-btn">submit</button>
+      </div>
+      <div class="form-alert"></div>
+    </form>
+    <section class="tasks-container">
+      <p class="loading-text">Loading...</p>
+      <div class="tasks"></div>
+    </section>
+    <!-- axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="./browser-app.js"></script>
+  </body>
 </html>
