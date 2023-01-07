@@ -1,8 +1,11 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const validator = require("validator");
+const Schema = mongoose.Schema;
 
-mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser:    true, 
-    useUnifiedTopology: true,
-    useCreateIndex:     true,
-})
- 
+Connect_url = process.env.MONGODB_URL;
+mongoose.connect(Connect_url, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});

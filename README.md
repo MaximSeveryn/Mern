@@ -1,56 +1,31 @@
-# Task Management REST API
-This is a back-end code repository.  The front-end code repository can be found here: [https://github.com/pgmorgan/task-manager-api-frontend](https://github.com/pgmorgan/task-manager-api-frontend).
+# task-manager-api-nodejs
+A task manager API built using Node.js and Mongoose with several features, Well it contains many completely defined node-js REST API's for different functionality
+1. Authentication feature (login, logout) on multiple devices using Web token, 
+2. Creating tasks, updating and deleting tasks by Id,
+3. Viewing logged User profile,
+4. Registering User,
+5. Updating and Deleting User,
+6. Different URL Query parameters during fetching tasks and many more,
+7. Session expire using nodejs.
+8. To upload an image in nodejs using multer(local storage).
+9. CRUD(Create, Read, Update, Delete) API's have been successfully created, here you can create any note and then you can find it by id, author name, title as well as all, you can edit it by id name and delete it also.
+10. Rest Api's for user sign-up, login, logout and user profile using node-js, expess, mongodb along with jwt token as an authentication agent
 
-This is a full featured Task Management REST API back-end built with Node.js and MongoDB.  Features include:
+Test and run the API on postman
 
-- Pagination and filtering of server responses to avoid slow page load times.
-- Full CRUD features for User and Task instances.
-- Hash encryption of passwords and access management with JWT tokens.  
-- Restricted user access to CRUD operations based on JWT tokens.
+![forthebadge](https://badgen.net/npm/v/express)
 
-### SETUP INSTRUCTIONS
-
-To use this code you will require an account with [SendGrid](https://signup.sendgrid.com/).  Sign-up is free and no credit card is required to access a free-tier API Key.
-
-Node.js version 12+ and npm must be installed on your machine.  In terminal type the following commands:
+Clone the repository
 ```
-git clone https://github.com/pgmorgan/task-manager-api.git
-cd task-manger-api
-sudo npm install
-mkdir config
-cd config
-touch dev.env
-vim dev.env
+https://github.com/punitkmryh/task-manager-API-Nodejs
 ```
-
-Insert the following lines in `dev.env`, replacing all `<content>` with your own information:
-
+To install the dependencies, simply write
 ```
-PORT=<port number>
-SGMAIL_EMAIL=<your email address>
-MONGODB_URL=<mongodb connection string>
-SENDGRID_API_KEY=<api key>
-JWT_SECRET=<unique key of your choice to generate JSON web tokens>
+npm install
 ```
-
-To run the web server return to the root of the repository and type:
+To run the app, simply write
 ```
 npm run dev
 ```
-Alternatively you may name `config/prod.env` or `config/staging.env` and appropriately run the web server with `npm run prod` or `npm run staging`.
-
-### API USAGE
-
-A front-end has been developed for this REST API with Vue.js.  The Front-end code repository can be found here: [https://github.com/pgmorgan/task-manager-api-frontend](https://github.com/pgmorgan/task-manager-api-frontend).  Also, all HTTP requests can be made from software such as [Postman](www.getpostman.com).  Postman is free and exists for all major operating systems.
-
-For feedback or inquiries please contact Peter at petergm@gmail.com
-
-### FRONTEND SCREENSHOTS
-
-##### Screenshot #1
-
-![Screenshot of Task Tracker](img/Screenshot-TaskTracker-App.png?raw=true "Screenshot of TaskTracker App")
-
-##### Screenshot #2
-	
-![Screenshot of Task Tracker](img/Screenshot-TaskTracker-App-2.png?raw=true "Screenshot of TaskTracker App")
+##### Made with ♥ by <a href="https://github.com/punitkmryh">punitDev</a>
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/punitkmryh)

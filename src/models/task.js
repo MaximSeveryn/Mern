@@ -1,33 +1,60 @@
-const mongoose = require("mongoose")
+// TODO : Task-Model
+/**
+ * @Schema Properties:
+ * description
+ * completed
+ *
+ * ! Mongoose VIRTUAL ->
+ *  a virtual is a property that is not stored in MongoDB.
+ *  Virtuals are typically used for computed properties on documents.
+ *
+ * Author: punitkumaryh
+ */
+const mongoose = require("mongoose");
+const validator = require("validator");
+const Schema = mongoose.Schema;
 
-/*  MONGOOSE TASK SCHEMA    */
-const taskSchema = new mongoose.Schema({
-    description:   {
-        type:       String,
-        required:   true,
-        trim:       true,
+//// Creating instance Schema
+//#region task-Schema
+const taskSchema = new Schema(
+  {
+    description: {
+      type: String,
+      required: true,
+      trim: true,
     },
     completed: {
-        type:       Boolean,
-        default:    false,
+      type: Boolean,
+      default: false,
     },
-    owner:  {
-        type:       mongoose.Schema.Types.ObjectId,
-        required:   true,
-        /*  "ref" property enables you to link two different 
-        **  mongoose models.  Thus we can fetch the entire public
-        **  profile of a user whenever we have a task ID.
-        **
-        **  You access the "User" instance associated with owner ID
-        **  by using the syntax:
-        **      task.populate("owner").execPopulate()
-        */
-        ref:        "User"                
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      require: true,
+      // $$ "ref" reference the User model to access User details in task model
+      ref: "User",
     },
-}, {
-    timestamps:     true,
-})
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Task = mongoose.model('Task', taskSchema)
+const task = mongoose.model("Task", taskSchema);
+//#endregion
 
-module.exports = Task
+//// Creating instance without schema
+//#region task schema-less
+// const task = mongoose.model("Task", {
+//   description: {
+//     type: String,
+//     required: true,
+//     trim: true,
+//   },
+//   completed: {
+//     type: Boolean,
+//     default: false,
+//   },
+// });
+//#endregion
+
+module.exports = task;

@@ -1,140 +1,254 @@
-const mongoose = require("mongoose")
-const validator = require("validator")
-const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
-const Task = require("../models/task")
+// TODO : User-Model
+/**
+ * @Schema Properties:
+ * name
+ * email
+ * password
+ * age
+ * phone
+ *
+ * * For below methods never use Arrow => function
+ * ^ userSchema.statics -> methods are accessible on "User" Models called as *MODEL_METHODS*
+ * ^ userSchema.methods -> methods are accessible on individual user &/ instance of models called *INSTANCE_METHODS*
+ *
+ * # Tracking by storing generated Token -> Helps in logging out
+ *  as sever sends generated token to client needs to store in DB.
+ *
+ * Author: punitkumaryh
+ */
 
-/*  MONGOOSE USER SCHEMA */
-const userSchema = new mongoose.Schema({
-    name:   {
-        type:       String,
-        required:   true,
-        trim:       true,
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const Schema = mongoose.Schema;
+const Task = require("./task");
+
+// TODO: Creating user model with schema
+//#region User-Schema
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    email:  {
-        type:       String,
-        unique:     true,
-        required:   true,
-        trim:       true,
-        lowercase:  true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error("Email is invalid")
-            }
-        },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Email is invalid");
+        }
+      },
     },
-    password:   {
-        type:       String,
-        required:   true,
-        trim:       true,
-        minlength:  7,
-        validate(value) {
-            if (value.toLowerCase().includes("password")) {
-                throw new Error("Password is invalid")
-            }
-        },
+    password: {
+      type: String,
+      required: true,
+      minlength: 7,
+      trim: true,
+      validate(value) {
+        if (value.toLowerCase().includes("password")) {
+          throw new Error("Cannot have as password as 'password'");
+        }
+      },
     },
-    age:    {
-        type:       Number,
-        default:    0,
-        validate(value) {
-            if (value < 0) {
-                throw new Error('Age must be a positive number')
-            }
-        },
+    age: {
+      type: Number,
+      default: 0,
+      // custom validator
+      validate(value) {
+        if (value < 0) {
+          throw new Error("Age must be positive Number");
+        }
+      },
+    }, // shorthand for 'age:{type:Number}'
+    phone: {
+      type: String,
+      trim: true,
+      //  Validator Library
+      validate(value) {
+        if (!validator.isMobilePhone(value)) {
+          throw new Error("Invalid phone number");
+        }
+      },
     },
-    tokens: [{
+    tokenSet: [
+      {
         token: {
-            type:       String,
-            required:   true,
+          type: String,
+          required: true,
         },
-    }],
+      },
+    ],
     avatar: {
-        type:       Buffer,
+      type: Buffer,
     },
-}, {
-    timestamps:     true,
-})
+  },
+  {
+    timestamps: true,
+  }
+);
 
-userSchema.virtual("myTasks", {
-    ref:            'Task',
-    localField:     "_id",
-    foreignField:   "owner",
-})
+// Implementing Mongoose Virtuals
+//#region FIXME: Storing tasks virtually in User model
+userSchema.virtual("ownerTasks", {
+  ref: "Task", //"Task" model
+  // Its relationship between "Task" and "owner"
+  localField: "_id", // Its relationship between "Task" and "owner"
+  foreignField: "owner",
+});
+//#endregion
 
-/*  EXPRESS TOJSON  */
-/*  When we pass a JS object off to express with res.send(myObj),
-**  In the background, express is making a call to JSON.stringify(myObj).
-**  "toJSON" seems to be a built-in function in Express which is called
-**  everytime you stringify a JS object.  Whatever "toJSON" returns is
-**  what will be stringified.
-*/
+// TODO: Fetching Public Profile (By Hiding Private data)
+//#region
+//#region FIXME: Logic -1
+// userSchema.methods.getPublicProfile = function () {
+//   const currentUser = this;
+//   // Making copy of currentUser and deleting private data fields
+//   const refObject = currentUser.toObject();
+
+//   delete refObject.password;
+//   delete refObject.tokenSet;
+//   return refObject;
+// };
+//#endregion
+
+//#region TODO: Logic -2
 userSchema.methods.toJSON = function () {
-    const user = this
-    const userObject = user.toObject()
+  const currentUser = this;
+  const userCopy = currentUser.toObject();
 
-    delete userObject.password
-    delete userObject.tokens
-    delete userObject.avatar
+  delete userCopy.password;
+  delete userCopy.tokenSet;
+  delete userCopy.avatar;
+  ``;
+  return userCopy;
+};
+//#endregion
+//#endregion
 
-    return userObject
-}
+// TODO: Generating Authentication Token
+//#region Token generation function
+userSchema.methods.generateAutToken = async function () {
+  const currentUser = this;
 
-/*  GENERATE AUTH TOKENS - "METHODS" METHOD AVAILABLE ON INSTANCES OF USER    */
-userSchema.methods.generateAuthToken = async function () {
-    const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
-    user.tokens = user.tokens.concat({ token: token })
-    await user.save()
+  const token = jwt.sign(
+    {
+      _id: currentUser._id.toString(),
+    },
+    process.env.JWT_SECRET
+  );
 
-    return token
-}
+  // # Tracking the generated Token by TODO:Storing Tokens into DB as part of document
+  currentUser.tokenSet = currentUser.tokenSet.concat({ token }); //{ token } == { token:xxxx.xxxx.xxx }
+  await currentUser.save();
 
-/*  FIND BY CREDENTIALS - "STATICS" METHOD AVAILABLE ON THE MODEL USER  */
-userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email: email })
-    if (!user) {
-        throw new Error("Unable to login")
-    }
+  return token; //returns token of currentUser
+};
+//#endregion
 
-    const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) {
-        throw new Error("Unable to login")
-    }
+// TODO: Finding user by their credentials (email and password)
+//#region User Credential function
+userSchema.statics.findByCredentials = async function (email, password) {
+  // TODO 1. Finding User by Email
+  const userDetails = await User.findOne({ email });
+  if (!userDetails) {
+    throw new Error("Unable to login!");
+  }
 
-    return user
-}
+  // TODO 2. Finding User by password -> only after Email match
+  const isMatch = await bcrypt.compare(password, userDetails.password);
+  if (!isMatch) {
+    throw new Error("Unable to login!");
+  }
+  // console.log("user:->", userDetails);
+  // console.log("Match?", isMatch);
+  return userDetails;
+};
+//#endregion
 
-/*  Certain mongoose methods bypass more advanced features like middleware,
-    such as our update route which will bypass this userSchema.pre
+//TODO: MIDDLEWARE -> Hashing New Created password and modified password
+//#region Pre Password save Mongoose middleware
+userSchema.pre("save", async function (next) {
+  const currentUser = this;
+  // "this" -> is current each input currentUser about to save
 
-    findById and update directly modify the database
+  // ? Checking password is already hashed + Hashing Newly created + modified passwords
+  if (currentUser.isModified("password")) {
+    currentUser.password = await bcrypt.hash(currentUser.password, 8);
+  }
 
-    Needs to be a regular function below, and not an arrow function
-    because arrow functions don't bind the 'this' argument.
-*/
+  next();
+});
+//#endregion
 
-/*  MIDDLEWARE CALLED BEFORE SAVE() METHOD ON USER INSTANCE */
-userSchema.pre('save', async function(next) {
-    const user = this
+//// TODO: MIDDLEWARE -> Deleting User's tasks when user is removed
+//#region deleting user's tasks
+userSchema.pre("remove", async function (next) {
+  const user = this;
+  await Task.deleteMany({ owner: user._id });
+  next();
+});
+//#endregion
 
-    if (user.isModified("password")) {
-        user.password = await bcrypt.hash(user.password, 8)
-    }
-    
-    next()
-    // If we never call next() it will hang forever and never save the User.
-    // 'next()' is a way of ensuring that not just the function has been run but all asynchronous 
-    // processes have also been completed.  It is thus a similar but different from "await"
-})
+const User = mongoose.model("User", userSchema);
+//#endregion
 
-/*  MIDDLEWARE CALLED BEFORE REMOVE() METHOD ON USER INSTANCE */
-userSchema.pre('remove', async function(next) {
-    const user = this
-    await Task.deleteMany({ owner: user._id })
-    next()
-})
+//// Creating User model without schema
+//#region Schema-less
+// const User = mongoose.model("User", {
+//   name: {
+//     type: String,
+//     required: true,
+//     trim: true,
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     trim: true,
+//     lowercase: true,
+//     validate(value) {
+//       if (!validator.isEmail(value)) {
+//         throw new Error("Email is invalid");
+//       }
+//     },
+//   },
+//   password: {
+//     type: String,
+//     required: true,
+//     minlength: 7,
+//     trim: true,
+//     validate(value) {
+//       if (value.toLowerCase().includes("password")) {
+//         throw new Error("Cannot have as password as 'password'");
+//       }
+//     },
+//   },
+//   age: {
+//     type: Number,
+//     default: 0,
+//     // custom validator
+//     validate(value) {
+//       if (value < 0) {
+//         throw new Error("Age must be positive Number");
+//       }
+//     },
+//   }, // shorthand for 'age:{type:Number}'
+//   phone: {
+//     type: String,
+//     trim: true,
+//     //  Validator Library
+//     validate(value) {
+//       if (!validator.isMobilePhone(value)) {
+//         throw new Error("Invalid phone number");
+//       }
+//     },
+//   },
+// });
+//#endregion
 
-const User = mongoose.model("User", userSchema)
-
-module.exports = User
+module.exports = User;
