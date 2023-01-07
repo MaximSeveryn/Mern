@@ -1,3 +1,2 @@
-node_modules/
-playground/
-.env
+node_modules
+config
