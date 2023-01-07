@@ -1,50 +1,31 @@
 {
-  "name": "todolist-backend",
-  "version": "0.1.0",
-  "description": "Todolist Application Backend which holds the REST apis",
-  "main": "dist",
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "REST API designed in Node.js for a TODO application",
+  "main": "server.js",
   "scripts": {
-    "dev": "npm run docs && nodemon -w src --exec \"babel-node src --presets es2015,stage-0 && killall node\"",
-    "build": "npm run docs && babel src -s -D -d dist --presets es2015,stage-0",
-    "docs": "apidoc -i src/api -o docs/",
-    "start": "node dist",
-    "prestart": "npm run -s build",
-    "test": "eslint src"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "parserOptions": {
-      "ecmaVersion": 7,
-      "sourceType": "module"
-    },
-    "env": {
-      "node": true
-    },
-    "rules": {
-      "no-console": 0,
-      "no-unused-vars": 1
-    }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toslimarif/todo-api.git"
   },
-  "author": "Akshat Bhargava <akshatbhargavadeepa@gmail.com>",
+  "keywords": [
+    "TODO",
+    "REST",
+    "API"
+  ],
+  "author": "Toslim Arif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/toslimarif/todo-api/issues"
+  },
+  "homepage": "https://github.com/toslimarif/todo-api#readme",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.13.3",
-    "compression": "^1.5.2",
-    "cors": "^2.7.1",
-    "express": "^4.13.3",
-    "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.2.4",
-    "mongoose-unique-validator": "^2.0.1",
-    "morgan": "^1.8.0",
-    "resource-router-middleware": "^0.6.0"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.9.0",
-    "babel-core": "^6.9.0",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-preset-stage-0": "^6.5.0",
-    "eslint": "^3.1.1",
-    "nodemon": "^1.9.2",
-    "apidoc": "^0.17.6"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment-timezone": "^0.5.26",
+    "mongoose": "^5.6.8"
   }
 }
