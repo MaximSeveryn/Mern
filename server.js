@@ -23,7 +23,7 @@ const app = express();
 
 //new
 const bcrypt = require('bcrypt')
-const passport = require('passport')
+/*const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
@@ -33,7 +33,7 @@ initializePassport(
   passport,
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
-)
+)*/
 //new
 
 
