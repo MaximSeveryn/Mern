@@ -44,9 +44,6 @@ app.get('/', async function (req, res) {
 
 
 //registr
-app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
-})
 
 
 
