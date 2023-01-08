@@ -1,15 +1,10 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-  }
-
-
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
- const taskRoute = require('./routes/task');
+// const taskRoute = require('./routes/task');
 const ejsLint = require('ejs-lint');
 const Task = require('./models/taskModel');
 
@@ -19,9 +14,6 @@ dotenv.config({ path: './env' });
 connectDB();
 
 const app = express();
-
-
-
 app.use(express.json());
 
 if (process.env.MODE === 'development') {
@@ -37,10 +29,10 @@ app.use(bodyParser());
 app.set("view engine", "ejs")
 
 //! ROUTES
- var personalRoute = require('./routes/personalRoute')
- app.use('/personalView', personalRoute);
- var businessRoute = require('./routes/businessRoute')
- app.use('/businessView', businessRoute);
+// var personalRoute = require('./routes/personalRoute')
+// app.use('/personalView', personalRoute);
+// var businessRoute = require('./routes/businessRoute')
+// app.use('/businessView', businessRoute);
 
 //! METHODS
 
@@ -49,14 +41,6 @@ app.get('/', async function (req, res) {
         res.render("index.ejs", { tasksList: tasks });
     });
 });
-
-
-//registr
-
-
-
-//registr
-
 
 app.get('/personalTask', async function (req, res) {
     Task.find({ type: 'personal' }, function (err, tasks) {
