@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Task details</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container">
+
+      <h2>Task details</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>Title</td>
+            <td>:</td>
+            <td><%= task.title %></td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td>:</td>
+            <td><%= task.description %></td>
+          </tr>
+          <tr>
+            <td>Assignee</td>
+            <td>:</td>
+            <td><%= task.assignee %></td>
+          </tr>
+          <tr>
+            <td>Action plan</td>
+              <td>:</td>
+            <td><%=task.actionPlan %></td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>:</td>
+            <td><%=task.status %></td>
+          </tr>
+
+          <tr>
+            <td>Start Date</td>
+            <td>:</td>
+            <td><%= moment.utc(task.startDate).format("MM-DD-YYYY")%></td>
+          </tr>
+          <tr>
+            <td>End Date</td>
+            <td>:</td>
+            <td><%= moment.utc(task.endDate).format("MM-DD-YYYY")%></td>
+          </tr>
+
+          <tr>
+            <td>Restrospective</td>
+              <td>:</td>
+            <td><%=task.retrospective %></td>
+          </tr>
+          <tr>
+            <td colspan="1"><button onclick="location.href='/tasks/edit/<%= task._id%>';">Edit</button></td>
+            <td colspan="1"><button onclick="location.href='/tasks';">Tasks</button></td>
+            <td>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <form action="/tasks/delete/<%= task._id%>" method="post" onSubmit="return confirm('Do you really want to delete the task ?');" >
+        <button type="submit" id="delButton">DELETE</button>
+      </form>
+    </div>
+  </body>
+</html>

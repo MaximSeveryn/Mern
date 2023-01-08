@@ -1,0 +1,165 @@
+body {
+  padding: 30px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #555555;
+}
+
+a {
+  color: #00B7FF;
+}
+ul {
+       margin:0;
+       padding:0;
+       text-align: center;
+       list-style:none;                
+     }
+ ul  li {
+          padding: 2px 5px;               
+        }
+
+            
+.container {
+  padding: 20px;
+  background-color: #efefef;
+  width: 600px;
+  border-radius: 6px;
+  
+}
+.container h3 a {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #00AE4D;
+  border-radius: 6px;
+  color: #FFFFFF;
+}
+th, td { width:20px }
+.container h3 a:hover, .container table tr td button:hover {
+  background-color: #78F5AE;
+  color: #999999;
+  cursor: pointer;
+}
+
+.container table {
+  width: 360px;
+}
+
+.container table tr td {
+  padding: 5px;
+}
+
+.container table tr td input, .container table tr td textarea {
+  border: solid 1px #dddddd;
+  padding: 5px 10px;
+  border-radius: 6px;
+  width: 200%;
+  color: #777777;
+}
+
+.container table tr td button {
+  border: solid 1px #AABF5C;
+  background-color: #00AE4D;
+  border-radius: 6px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 10px 0;
+  padding: 10px 20px;
+}
+
+.container form button {
+  border: solid 1px #CB2027;
+  background-color: #DD4B39;
+  border-radius: 6px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 10px 0;
+  padding: 10px 20px;
+}
+
+.container .list-table {
+  width: 360px;
+  border: solid 2px #DDDDDD;
+  border-spacing: 0;
+}
+
+.container .list-table th {
+  border-bottom: solid 2px #DDDDDD;
+}
+
+footer {
+   position:fixed;
+   right:0px;
+   bottom:0px;
+   text-align: right;
+   height:20px;
+   width:100%;
+   background-color: #0080ff;
+   color: white;
+   
+    padding: 10px 20px;
+}
+textarea {
+  height:170px ;
+
+}
+#backButton {
+  border: solid 1px grey;
+  background-color: grey;
+  border-radius: 6px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 10px 0;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+#backButton {
+  border: solid 1px grey;
+  background-color: white;
+  border-radius: 6px;
+  text-transform: uppercase;
+  color: blue;
+  margin: 10px 0;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+#backButton:hover{
+  background-color: black;
+  color:white;
+  cursor: pointer;
+}
+#delButton:hover{
+  background-color: red;
+  color: white;
+  cursor: pointer;
+}
+#createButton {
+  border: solid 1px #AABF5C;
+  background-color: #00AE4D;
+  border-radius: 6px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 10px 0;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+h1 {
+ font-size: 33px;
+ line-height: 65px;
+ margin:0;
+ font-weight: normal;
+ width:100%;
+ font-family: 'Hammersmith One', sans-serif;
+ text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+ position: fixed;
+ top:0px;
+ right:0px;
+ color: white;
+ text-align:center;
+ background-color: #0080ff;
+}
+
+h2 {
+
+  color: #0080ff;
+
+}

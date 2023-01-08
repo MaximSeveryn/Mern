@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create task</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  
+  </head>
+  <body>
+    <div class="container">
+
+      <h2>Create New Task</h2>
+      <form action="/tasks/save" method="post">
+        <table>
+          <tbody>
+            <tr>
+              <td>Title <span style="color: red;font-weight:900;">*</span> </td>  
+              <td> <input type="text" name="title" placeholder="please enter task name" required /></td>
+            </tr>
+            <tr>
+              <td>Description <span style="color: red;font-weight:900;">*</span></td>
+              <td><textarea name="description" placeholder="please enter short description" required></textarea></td>
+            </tr>
+            <tr>
+              <td>Assignee <span style="color: red;font-weight:900;">*</span></td>
+              <td><input type="text" name="assignee" placeholder="please enter name of the person" required/></td>
+            </tr>
+
+            <tr>
+              <td>Action plan</td>
+              <td><textarea name="actionPlan" placeholder="please enter steps involved" /></textarea></td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td><input type="text" name="status" placeholder="enter: todo/inProgess/review/done" /></td>
+            </tr>
+            <tr>
+              <td>Start Date <span style="color: red;font-weight:900;">*</span></td>
+                <td><input type="date" name="startDate"  /></td>
+            </tr>
+            <tr>
+              <td>End Date <span style="color: red;font-weight:900;">*</span></td>
+              <td><input type="date" name="endDate"  /></td>
+            </tr>
+            <tr>
+              <td>Restrospective</td>
+              <td><textarea name="retrospective" placeholder="please enter + or - points" /></textarea></td>
+            </tr>
+            <tr>
+              <td colspan="2"><button type="submit">Save</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+      <button id="createButton" onclick="location.href='/tasks';">Tasks</button>
+      <button id="createButton" onclick="location.href='/';">Home</button>
+    </div>
+  </body>
+</html>
