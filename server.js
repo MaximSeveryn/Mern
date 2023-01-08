@@ -19,6 +19,26 @@ dotenv.config({ path: './env' });
 connectDB();
 
 const app = express();
+
+
+//new
+const bcrypt = require('bcrypt')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
+const methodOverride = require('method-override')
+
+const initializePassport = require('./passport-config')
+initializePassport(
+  passport,
+  email => users.find(user => user.email === email),
+  id => users.find(user => user.id === id)
+)
+//new
+
+
+
+
 app.use(express.json());
 
 if (process.env.MODE === 'development') {
