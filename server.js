@@ -9,7 +9,7 @@ const colors = require('colors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
-// const taskRoute = require('./routes/task');
+ const taskRoute = require('./routes/task');
 const ejsLint = require('ejs-lint');
 const Task = require('./models/taskModel');
 
@@ -19,23 +19,6 @@ dotenv.config({ path: './env' });
 connectDB();
 
 const app = express();
-
-
-//new
-//const bcrypt = require('bcrypt')
-/*const passport = require('passport')
-const flash = require('express-flash')
-const session = require('express-session')
-const methodOverride = require('method-override')
-
-const initializePassport = require('./passport-config')
-initializePassport(
-  passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
-)*/
-//new
-
 
 
 
@@ -54,10 +37,10 @@ app.use(bodyParser());
 app.set("view engine", "ejs")
 
 //! ROUTES
-// var personalRoute = require('./routes/personalRoute')
-// app.use('/personalView', personalRoute);
-// var businessRoute = require('./routes/businessRoute')
-// app.use('/businessView', businessRoute);
+ var personalRoute = require('./routes/personalRoute')
+ app.use('/personalView', personalRoute);
+ var businessRoute = require('./routes/businessRoute')
+ app.use('/businessView', businessRoute);
 
 //! METHODS
 
