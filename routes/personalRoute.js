@@ -4,7 +4,7 @@ const colors = require('colors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
-// const taskRoute = require('./routes/task');
+ const taskRoute = require('./routes/task');
 const ejsLint = require('ejs-lint');
 const Task = require('./models/taskModel');
 
@@ -36,11 +36,11 @@ app.get('/', async function (req, res) {
     });
 });
 
-// app.get('/personalTask', async function (req, res) {
-//     Task.find({ type: 'personal' }, function (err, tasks) {
-//         res.render("personalView.ejs", { tasksList: tasks });
-//     });
-// });
+ app.get('/personalTask', async function (req, res) {
+     Task.find({ type: 'personal' }, function (err, tasks) {
+         res.render("personalView.ejs", { tasksList: tasks });
+    });
+ });
 
 app.get('/businessTask', async function (req, res) {
     Task.find({ type: 'business' }, function (err, tasks) {
