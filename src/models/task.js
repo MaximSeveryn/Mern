@@ -1,7 +1,5 @@
-// require mongoose
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-// creates a Task schema for every task on the db
 const taskSchema = new mongoose.Schema({
     description: {
         type: String,
@@ -13,19 +11,14 @@ const taskSchema = new mongoose.Schema({
         default: false
     },
     owner: {
-        // property which creates a user-task relationship
-        type: mongoose.Schema.Types.ObjectId,   // stores the _id of the user who created the task
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'users'  // indicates that the _id will be found in User collection(only reqd if you ever want to populate the fields)
+        ref: 'User'
     }
 }, {
-    // options object on the schema
-    timestamps: true
-    // adds the createdAt and updatedAt(last updation time) fields in every Task document
+    timestamps:true
 })
 
-// creates a Task model for mongoose data which will be stored on 'tasks' collection
-const Task = mongoose.model('tasks', taskSchema);
+const Task = mongoose.model('Task', taskSchema)
 
-// export the task model
-module.exports = Task;
+module.exports = Task

@@ -1,11 +1,7 @@
-// require mongoose
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const validator = require('validator')
 
-// connects to mongodb database
-mongoose.connect(process.env.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-});
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
+
+
 
