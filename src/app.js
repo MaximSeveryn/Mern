@@ -1,17 +1,13 @@
-const express = require('express');
-require('./db/mongoose');
-const userRouter = require('./routers/user');
-const taskRouter = require('./routers/task');
+const express = require('express')
 
-const app = express();  // Starting the express app
+const userRouter = require('./api/routes/user')
+const taskRouter = require('./api/routes/task')
 
-// app.use((req,res,next) => { // MIDDLEWARE ---> For Maintainance
-//     res.status(503).send('Server is Temporarily Shutdown - Under Maintainance');
-// });
+const app = express()
+app.use(express.json())
 
-app.use(express.json()); // Parse the incomming JSON
+// ROUTES
+app.use(userRouter)
+app.use(taskRouter)
 
-app.use(userRouter);
-app.use(taskRouter);
-
-module.exports = app;
+module.exports = { app}
