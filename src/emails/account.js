@@ -1,26 +1,26 @@
-const sgMail = require('@sendgrid/mail')
+const sgMail = require('@sendgrid/mail'); // Email Support
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
 const sendWelcomeEmail = (email, name) => {
     sgMail.send({
-        to: email,
-        from: 'saxenasarthak72@gmail.com',
-        subject: 'Thanks for signing up for our application',
-        text: `Welcome to the app, ${name}. Let us know about your`
-    })
-}
+        to      : email,
+        from    : 'swastikmedical74@gmail.com',
+        subject : 'Regarding Task Manager APP',
+        text    : `Welcome to the APP, ${name}. Let us know your thoughts about the app. We proudly serve our Customers. Thank You !` 
+    });
+};
 
-const sendCancelationEmail = (email, name) => {
+const sendCancellationEmail = (email, name) => {
     sgMail.send({
-        to: email,
-        from: 'saxenasarthak72@gmail.com',
-        subject: `${name}, We are sorry to hear that you are leaving`,
-        text: 'Please let us know about your experience with us and what do you think could be improved.'
-    })
-}
+        to      : email,
+        from    : 'swastikmedical74@gmail.com',
+        subject : 'Regarding Task Manager APP',
+        text    : `Good Bye, ${name}. Let us know your thoughts about the app. We proudly serve our Customers. We hope to see you soon. Thank You !` 
+    });
+};
 
 module.exports = {
     sendWelcomeEmail,
-    sendCancelationEmail
+    sendCancellationEmail
 }

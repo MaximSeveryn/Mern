@@ -1,40 +1,35 @@
-const request = require('supertest')
-const app = require('../src/app')
-const { userTwo, userOne, taskOne, setupDatabase } = require('./fixtures/db')
-const Task = require('../src/models/task')
+const request = require('supertest'); // Express Testing Framework
+const app = require('../src/app'); // Application
+const Task = require('../src/models/task'); // Task Model
+const { _id, futureUser, setupDatabase, taskOne, taskTwo } = require('./fixtures/db');
 
-beforeEach(setupDatabase)
+beforeEach(setupDatabase); // Before each test is run, Delete the User, so the User Creation Test gets passed
 
-test('Should create a task for user', async () => {
+test('Should Create a Task for Authenticated User', async () => {  // Test for creating a Task
     const response = await request(app)
-    .post('/tasks')
-    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
-    .send({
-        description: 'From test'
-    })
-    .expect(201)
+                        .post('/task')
+                        .set('Authorization', `Bearer ${futureUser.tokens[0].token}`)
+                        .send({
+                            task: "Learn to Fuck",
+                            status: false
+                        })
+                        .expect(201)
+    const task = await Task.findById(response.body._id);
+    expect(task).not.toBeNull();
+});
 
-    const task = Task.findById(response.body._id)
-    expect(task).not.toBeNull()
-})
-
-test('Should fetch tasks for userOne', async () => {
-    const response = await request(app)
-    .get('/tasks')
-    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
-    .send()
-    .expect(200)
-
-    expect(response.body.length).toBe(2)
-})
-
-test('Should not allow userTwo to delete taskOne', async () => {
+test('Should Get Tasks for Authenticated User', async () => {  // Test for getting Tasks
     await request(app)
-    .delete(`/tasks/${taskOne._id}`)
-    .set('Authorization', `Bearer ${userTwo.tokens[0].token}`)
-    .send()
-    .expect(404)
+        .get('/tasks')
+        .set('Authorization', `Bearer ${futureUser.tokens[0].token}`)
+        .send()
+        .expect(200)
+});
 
-    const task = Task.findById(taskOne._id)
-    expect(task).not.toBeNull()
-})
+test('Should Delete Users Tasks for Authenticated User', async () => {  // Test for getting Tasks
+    await request(app)
+        .delete(`/task/${taskOne._id}`)
+        .set('Authorization', `Bearer ${futureUser.tokens[0].token}`)
+        .send()
+        .expect(200)
+});

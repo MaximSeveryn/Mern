@@ -1,64 +1,50 @@
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
-const User = require('../../src/models/user')
-const Task = require('../../src/models/task')
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const Task = require('../../src/models/task'); // Task Model
+const User = require('../../src/models/user'); // User Model
 
-const userOneId = new mongoose.Types.ObjectId
-const userOne = {
-    _id: userOneId, 
-    name: 'Sarthak',
-    email: 'saxenasarthak@gmail.com',
-    password: 'sarthak',
-    tokens: [{
-        token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET)
-    }]
+const _id = new mongoose.Types.ObjectId(); // Mongooses Object Id
+
+const futureUser = {
+    _id,
+    name: "Raj Gupta",
+    email: "vijaydatta57@gmail.com",
+    password: "Raj@123",
+    age: 15,
+    tokens: [
+        {
+            token: jwt.sign({ _id }, process.env.JWT_SECRET_KEY)
+        }
+    ]
 }
-const userTwoId = new mongoose.Types.ObjectId
-const userTwo = {
-    _id: userTwoId, 
-    name: 'Sarthi',
-    email: 'saxenasarthi@gmail.com',
-    password: 'sarthak',
-    tokens: [{
-        token: jwt.sign({ _id: userTwoId }, process.env.JWT_SECRET)
-    }]
-}
+
 const taskOne = {
     _id: new mongoose.Types.ObjectId(),
-    description: 'Task 1',
-    completed: false,
-    owner: userOneId
+    task: "Learn Node.JS",
+    status: true,
+    owner: futureUser._id
 }
 const taskTwo = {
     _id: new mongoose.Types.ObjectId(),
-    description: 'Task 2',
-    completed: true,
-    owner: userOneId
-}
-const taskThree = {
-    _id: new mongoose.Types.ObjectId(),
-    description: 'Task 3',
-    completed: true,
-    owner: userTwoId
+    task: "Learn Electron.JS",
+    status: false,
+    owner: futureUser._id
 }
 
 const setupDatabase = async () => {
-    await User.deleteMany()
-    await new User(userOne).save()
-    await new User(userTwo).save()
-    await Task.deleteMany()
-    await new Task(taskOne).save()
-    await new Task(taskTwo).save()
-    await new Task(taskThree).save()
+    await User.deleteMany();
+    await Task.deleteMany();
+    const user = new User(futureUser);
+    await user.save();
+    
+    await new Task(taskOne).save();
+    await new Task(taskTwo).save();
 }
 
 module.exports = {
-    userOneId,
-    userOne,
-    userTwoId,
-    userTwo,
+    _id,
+    futureUser,
+    setupDatabase,
     taskOne,
-    taskTwo,
-    taskThree,
-    setupDatabase
+    taskTwo
 }
