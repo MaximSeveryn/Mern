@@ -1,29 +1,45 @@
-# Task Manager (2.0)
-An advanced version of the PTMS task manager; The completed project will consist of a Node.js API, a query to build the full MySQL database, and a deployable client web application in React.js
 
-**Version 1.0**  
-This first release will be an end-to-end web application that supports a single user. The release will consist of a React web client application, a Node + Express REST API with real-time notifications via Socket.IO, a SQL query for building the TaskManagerDB in MySQL, and scripts/instructions for running the web app.
+ <img align="left" src = "https://media2.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif?cid=ecf05e47a0n3gi1bfqntqmob8g9aid1oyj2wr3ds3mg700bl&rid=giphy.gif" width = 100px height=100px>
 
-**Current Status:**  
-Version 1.0 Complete!!
+<h1 align="center">TodoApp - RESTful API </h1>
+ <p align="center">
+ 
+ <br />
 
-**Build Instructions:** 
+## Technologies
 
-The following instructions assume MySQL is installed.
+* node.js
+* express
+* ejs
+* MongoDB
+* mongoose
+* bodyParser
+* loadash
+* path
+* dotenv
+* morgan
 
-Database Setup:
-1. In a MySQL Shell or command window, run DatabaseBuilder.sql to create 'TaskManagerDB'
-2. Create or use existing user with password, e.g. username: 'user123', password: 'bestpassword'
-3. Provide 'user123'@'localhost' with ALL privileges to 'TaskManagerDB'
+## Instalation
+```node.js
+  git clone https://github.com/Shodydosh/TodoAppRestfulAPI.git
+  run npm run dev
+  open localhost:5000
+  ```
+## Requirements
+ * Node.js
+ * MongoDB
+ 
+## Deployments
+https://todoapp-restapi621.herokuapp.com/
 
-Server Setup:
-1. cd into TaskManager-2.0/server
-2. Run 'npm install' to install all dependencies
-3. To start server, run 'node server.js --user user123 --password bestpassword' (assuming above credentials)
+## Quicklook
 
-Client Setup:
-1. (In another command-line window) cd into TaskManager-2.0/client-app
-2. Run 'npm install' to install all dependencies
-3. Run 'npm start' to start React application
-4. Open web browser and go to 'localhost:2000'
-5. Voila! Behold the power of the Task Manager
+<details> 
+  <summary>Screenshot</summary>
+  <br />
+<div>
+<img src="https://user-images.githubusercontent.com/87895460/190206397-02e041a8-b01a-4cb4-8352-91f06f63acf8.png" alt="Shodydosh" />
+</div>
+
+</details>
+
